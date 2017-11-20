@@ -138,26 +138,6 @@ def test_recommendation():
 
     print similar_beers(beer_input, beer_list, index)
 
-'''
-Generating beer keywords in json file to put in the flask app
-'''
-import json
-if 'beer_list' not in locals():
-    beer_list = pickle.load(open('beer_list.p', 'rb'))
-if 'text_dict' not in locals():
-    text_dict = pickle.load(open('text_dict.p', 'rb'))
-if 'index' not in locals():
-    index = pickle.load(open('index.p', 'rb'))
-if 'tfidf_corpus' not in locals():
-    tfidf_corpus = pickle.load(open('tfidf_corpus.p', 'rb'))
-    
-    
-beer_keyword = {}
-for beer in beer_list:
-    beer_keyword[beer] = beer_keywords(beer, tfidf_corpus, beer_list, text_dict, ntop=20)
-
-with open('beer_keywords.json','w') as fp:
-    json.dump(beer_keyword,fp)
 
 
 

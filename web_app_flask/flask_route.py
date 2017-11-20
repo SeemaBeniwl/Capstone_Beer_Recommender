@@ -12,14 +12,19 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 @app.route("/content.html", methods = ["GET", "POST"])
+
 def content():
-    with open("beer_list.p", 'rb') as bf:
-        beer_list = pickle.load(bf)
-    with open("index.p", "rb") as ix:
+
+    with open("./Content_based_engine/beer_list.p", "rb") as brl:
+        beer_list = pickle.load(brl)
+
+    with open("./Content_based_engine/index.p", "rb") as ix:
         index = pickle.load(ix)
-    with open("beer_keywords.json", "rb") as bk:
+
+    with open("./Content_based_engine/beer_keywords.json", "rb") as bk:
         beer_keywords = json.load(bk)
-    with open("dict_for_CB_table.p", "rb") as diCB:
+
+    with open("./Content_based_engine/dict_for_CB_table.p", "rb") as diCB:
         dict_for_cb_table = pickle.load(diCB)
 
     if request.method == "GET":
@@ -41,7 +46,7 @@ def content():
 
 
 ## @app.route("/collab.html", methods=["GET", "POST"])
-##def collab():
+## def collab():
 ##    with open("./CF/beer_dict.pickle", "r") as bf:
 ##        beer_dict = pickle.load(bf)
 ##    beer_list = sorted(beer_dict.values())
