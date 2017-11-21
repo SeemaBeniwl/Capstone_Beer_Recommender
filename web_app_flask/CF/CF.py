@@ -12,19 +12,16 @@ df = pd.read_csv("user_beer_rating_facorized.csv")
 df.dtypes
 n_users  = df.user.unique().shape[0]
 n_items = df.beer.unique().shape[0]
-'''computing the implicit matrix of the data'''
-implicit_mat = df.pivot(index = 'user',
-                        columns = 'beer',
-                        values = 'rating').notnull().as_matrix().astype(float)
-
-
-data_matrix = np.zeros((n_users, n_items))
-for line in df.itertuples():
-    data_matrix[line[1]-1, line[2]-1] = line[3]
-np.save('ratings_mat', data_matrix)
-
-
-
+#'''computing the implicit matrix of the data'''
+#implicit_mat = df.pivot(index = 'user',
+#                        columns = 'beer',
+#                        values = 'rating').notnull().as_matrix().astype(float)
+#
+#
+#data_matrix = np.zeros((n_users, n_items))
+#for line in df.itertuples():
+#    data_matrix[line[1]-1, line[2]-1] = line[3]
+#np.save('ratings_mat', data_matrix)
 
 from sklearn.cross_validation import train_test_split
 train_data, test_data = train_test_split(df, test_size = 0.25)
@@ -78,31 +75,6 @@ u, s, vt = svds(train_data_matrix, k = 20)
 s_diag_matrix=np.diag(s)
 X_pred = np.dot(np.dot(u, s_diag_matrix), vt)
 print 'User-based CF MSE: ' + str(rmse(X_pred, test_data_matrix))
-
-
-
-'''Using different package to do the svd for collaborative filter'''
-
-from surprise import SVD
-from surprise import evaluate
-import os
-import sys
-from surprise import Reader
-from surprise import Dataset
-file_path = os.path.expanduser('user_rating_fac.csv')
-reader = Reader(line_format='user item rating', sep='\t')
-data = Dataset.load_from_file(file_path, reader=reader) 
-
-
-
-
-
-
-algo = SVD()
-
-
-
-
 
 
 
