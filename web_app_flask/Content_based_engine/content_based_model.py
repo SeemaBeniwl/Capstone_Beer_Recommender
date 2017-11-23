@@ -91,7 +91,7 @@ if __name__ == "__main__":
     if 'tfidf_corpus' not in locals():
         tfidf_corpus = pickle.load(open('tfidf_corpus.p', 'rb'))
     
-    beer_select = 'side project fuzzy'
+    beer_select = 'Side Project Fuzzy'
     print 'the beer you select is:', beer_select
     print 'top 50 key words for this beer are:'
     key_words = beer_keywords(beer_select, tfidf_corpus, beer_list, text_dict, ntop=50)
