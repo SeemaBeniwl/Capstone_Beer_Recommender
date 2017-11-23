@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, jsonify, url_for
 from Content_based_engine.content_based_model import *
-from CF.cf_final import *
 import json
 import pickle
 import numpy as np
@@ -45,35 +44,7 @@ def content():
                                    table_list=table_list, key_words=key_words)
 
 
-@app.route("/collab.html", methods=["GET", "POST"])
-def collab():
-   with open("./CF/beer_dict.pickle", "r") as bf:
-       beer_dict = pickle.load(bf)
-   beer_list = sorted(beer_dict.values())
-   beer_list = [x.decode('ascii', 'ignore') for x in beer_list if '\x8a\x97\xc8' not in x] # we need to fix this later
-   ratings_mat = np.load("./CF/ratings_mat.npy")
-   ratings_mat, g_avg = cf_prerprocess(ratings_mat)
 
-   if request.method == "POST":
-       inp_tup = []
-       for i in range(1, 6):
-           beer_inp_key = "beer_inp" + str(i)
-           rating_inp_key = "rating_inp" + str(i)
-           if request.form[beer_inp_key] and request.form[rating_inp_key]:
-              inp_tup.append((request.form[beer_inp_key], request.form[rating_inp_key]))
-
-       if inp_tup == []:
-           return render_template("collab.html", beer_list=beer_list)
-       else:
-           user_data = user_cf_proc(inp_tup, ratings_mat, beer_dict)
-           # print user_data
-           CF_rec = cf_rec(user_data, ratings_mat, g_avg, beer_dict)
-           # print CS_rec
-
-           return render_template("collab.html", cf_rec=CF_rec, beer_list=beer_list)
-
-   else:
-       return render_template("collab.html", beer_list=beer_list)
 
 @app.route('/autocomplete', methods=['GET'])
 def autocomplete():
@@ -83,5 +54,3 @@ def autocomplete():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
